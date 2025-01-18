@@ -21,6 +21,11 @@ class InfluencerRetrieveView(RetrieveAPIView):
 class HomePageView(APIView):
     def get(self, request):
         influencers = Influencer.objects.all()
+        influencers = sorted(
+            influencers,
+            key=lambda influencer: get_claims_avg_score(influencer.claim_set.all()),
+            reverse=True
+        )
         claims = Claim.objects.all()
         return Response({
             'active_influencers': Influencer.objects.filter(deleted=False).count(),
