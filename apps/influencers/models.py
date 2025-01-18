@@ -12,9 +12,14 @@ VALIDATION_CHOICES = (
     ('debunked', 'Debunked'),
 )
 
-# TODO
 CLAIM_CATEGORIES = (
-
+    ('nutrition', 'Nutrition'),
+    ('exercise', 'Exercise'),
+    ('mental_health', 'Mental Health'),
+    ('sleep', 'Sleep'),
+    ('chronic_illness_management', 'Chronic Illness Management'),
+    ('supplements', 'Supplements'),
+    ('other', 'Other'),
 )
 
 class BaseModel(models.Model):
@@ -44,6 +49,7 @@ class Claim(BaseModel):
     influencer = models.ForeignKey(Influencer, on_delete=models.CASCADE)
     source_type = models.CharField(max_length=255, choices=SOURCE_CHOICES)
     source_id = models.CharField(max_length=255)
+    validation_sources = models.JSONField(default=list) 
     score = models.FloatField()
     claim = models.TextField()
     validation = models.CharField(max_length=255, choices=VALIDATION_CHOICES)

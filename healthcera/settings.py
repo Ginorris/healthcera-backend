@@ -15,6 +15,8 @@ GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
 GOOGLE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3'
 
+GOOGLE_API_MAX_RESULTS = 50
+
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 OPENAI_ENGINE = 'gpt-3.5-turbo-0125'
