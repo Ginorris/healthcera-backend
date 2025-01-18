@@ -36,7 +36,7 @@ class InfluencerRetreiveSerializer(serializers.Serializer):
             'categories': [],
             # 'products': [],
             # 'revenue'
-            'score': get_claims_avg_score(claims),
+            'score': f"{get_claims_avg_score(claims)}%",
             'claims': ClaimSerializer(instance.claim_set.all(), many=True).data,
         }
 
@@ -52,6 +52,6 @@ class InfluencerListSerializer(serializers.Serializer):
             'name': instance.name,
             'pp': instance.youtube_pp,
             'followers': instance.followers,
-            'score': get_claims_avg_score(claims),
+            'score': f"{get_claims_avg_score(claims)}%",
             'verified_claims': instance.claim_set.filter(validation='verified').count(),
         }

@@ -63,9 +63,7 @@ def search_claims(influencer, verify_with_journals, journals):
     # tweets = filter_checked_tweet_ids(raw_tweets, influencer)
     # tweets = [{"id": tweet["id"], "text": tweet["text"], "type": "twitter"} for tweet in tweets]
     tweets = []
-
     results = process_videos_and_tweets(videos, tweets, verify_with_journals, journals)
-    print(results)
 
     claims = []
     for res in results:

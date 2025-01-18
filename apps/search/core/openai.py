@@ -29,8 +29,7 @@ def is_health_influencer(name: str) -> bool:
         )
         answer = response.choices[0].message.content.strip().lower()
         return answer == "yes"
-    except Exception as e:
-        print(f"Error checking health influencer: {e}")
+    except Exception:
         return False
 
 
@@ -104,8 +103,7 @@ def process_text_chunk(chunk, verify_with_journals, journals):
         response_text = response.choices[0].message.content
         cleaned_text = re.sub(r"```json|```", "", response_text).strip()
         return json.loads(cleaned_text)
-    except Exception as e:
-        print(f"Error processing chunk: {e}")
+    except Exception:
         return {"claims": []}
 
 def process_text_chunks(text, verify_with_journals, journals):
@@ -124,7 +122,6 @@ def process_videos_and_tweets(videos, tweets, verify_with_journals, journals):
 
     # Process videos
     for video in videos:
-        print(f"Processing video ID: {video['id']}")
         claims = process_text_chunks(video["text"], verify_with_journals, journals)
         for claim in claims:
             claim["source_id"] = video["id"]
@@ -133,7 +130,6 @@ def process_videos_and_tweets(videos, tweets, verify_with_journals, journals):
 
     # Process tweets
     for tweet in tweets:
-        print(f"Processing tweet ID: {tweet['id']}")
         claims = process_text_chunks(tweet["text"], verify_with_journals, journals)
         for claim in claims:
             claim["source_id"] = tweet["id"]
