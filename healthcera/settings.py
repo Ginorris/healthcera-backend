@@ -30,8 +30,7 @@ TWITTER_AUTH = tweepy.OAuth1UserHandler(
 
 TWITTER_API_CLIENT = tweepy.API(TWITTER_AUTH, wait_on_rate_limit=True)
 
-# TODO DEBUG
-DEBUG = True
+DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",

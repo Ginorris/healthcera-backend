@@ -66,5 +66,5 @@ def get_recent_tweets(twitter_id: str, days: int = 7, count: int = None):
     try:
         tweets = fetch_user_tweets(twitter_id, client, count)
         return filter_tweets_by_date(tweets, since_date)
-    except tweepy.TweepyException as e:
+    except tweepy.TweepyException:
         return []

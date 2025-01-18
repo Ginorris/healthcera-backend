@@ -29,8 +29,8 @@ class InfluencerRetreiveSerializer(serializers.Serializer):
     def to_representation(self, instance):
         claims = instance.claim_set.all()[:20]
 
-        followers = instance.followers
-        if int(followers) > 1000000:
+        followers = int(instance.followers)
+        if followers > 1000000:
             followers = f"{followers/1000000}M"
         elif followers > 1000:
             followers = f"{followers/1000}K"
