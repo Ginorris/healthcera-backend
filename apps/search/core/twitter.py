@@ -13,7 +13,7 @@ def get_twitter_handle(channel_statistics: dict) -> str:
     external_links = branding_settings.get("channel", {}).get("externalLinks", [])
     if not external_links:
         return None
-    
+
     for link in external_links:
         if "twitter.com" in link or "x.com" in link:
             handle = link.split(".com/")[1].strip("/")
@@ -32,14 +32,13 @@ def get_twitter_id(handle: str) -> str:
         return None
 
 
-
 def fetch_user_tweets(twitter_id, client, count=None):
     """Fetch tweets from the user's timeline."""
     return tweepy.Cursor(
         client.user_timeline,
         user_id=twitter_id,
         tweet_mode="extended",
-        count=count or 200
+        count=count or 200,
     ).items(count or 1000)
 
 
@@ -48,10 +47,12 @@ def filter_tweets_by_date(tweets, since_date):
     filtered_tweets = []
     for tweet in tweets:
         if tweet.created_at >= since_date:
-            filtered_tweets.append({
-                "id": tweet.id,
-                "text": tweet.full_text,
-            })
+            filtered_tweets.append(
+                {
+                    "id": tweet.id,
+                    "text": tweet.full_text,
+                }
+            )
         else:
             # stop processing if a tweet is older than the filter date
             break

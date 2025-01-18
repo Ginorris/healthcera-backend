@@ -9,11 +9,12 @@ from apps.influencers.api.serializers import InfluencerRetreiveSerializer
 
 class SearchView(APIView):
     def post(self, request):
-        influencer_name = request.data.get('influencer_name')
+        print("Request data:", request.data)
+        influencer_name = request.data.get("influencer_name")
         # include_revenue = request.data.get('include_revenue', False)
         # claims_per_influencer = request.data.get('claims_per_influencer', 50)
-        verify_with_journals = request.data.get('verify_with_journals', False)
-        journals = request.data.get('journals', [])
+        verify_with_journals = request.data.get("verify_with_journals", False)
+        journals = request.data.get("journals", [])
 
         # TODO we should actually check by some id
         if not influencer_name:
@@ -24,6 +25,7 @@ class SearchView(APIView):
         if not influencer:
             influencer = search_influencer(influencer_name)
 
+        # TODO uncomment
         search_claims(influencer, verify_with_journals, journals)
 
         # TODO response could be simplified

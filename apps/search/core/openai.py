@@ -22,10 +22,10 @@ def is_health_influencer(name: str) -> bool:
             model=settings.OPENAI_ENGINE,
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": prompt},
             ],
             max_tokens=5,
-            temperature=0
+            temperature=0,
         )
         answer = response.choices[0].message.content.strip().lower()
         return answer == "yes"
@@ -40,7 +40,7 @@ def split_text_into_chunks(text, max_tokens=3000):
     current_length = 0
 
     for word in words:
-        word_length = len(word) / 4  
+        word_length = len(word) / 4
         if current_length + word_length > max_tokens:
             chunks.append(" ".join(current_chunk))
             current_chunk = [word]
@@ -51,7 +51,7 @@ def split_text_into_chunks(text, max_tokens=3000):
 
     if current_chunk:
         chunks.append(" ".join(current_chunk))
-    
+
     return chunks
 
 
@@ -96,7 +96,7 @@ def process_text_chunk(chunk, verify_with_journals, journals):
             model=settings.OPENAI_ENGINE,
             messages=[
                 {"role": "system", "content": "You are an expert text analyzer."},
-                {"role": "user", "content": prompt}
+                {"role": "user", "content": prompt},
             ],
             temperature=0,
         )
@@ -105,6 +105,7 @@ def process_text_chunk(chunk, verify_with_journals, journals):
         return json.loads(cleaned_text)
     except Exception:
         return {"claims": []}
+
 
 def process_text_chunks(text, verify_with_journals, journals):
     chunks = split_text_into_chunks(text)
@@ -116,7 +117,6 @@ def process_text_chunks(text, verify_with_journals, journals):
     return all_claims
 
 
-
 def process_videos_and_tweets(videos, tweets, verify_with_journals, journals):
     all_claims = []
 
@@ -125,7 +125,7 @@ def process_videos_and_tweets(videos, tweets, verify_with_journals, journals):
         claims = process_text_chunks(video["text"], verify_with_journals, journals)
         for claim in claims:
             claim["source_id"] = video["id"]
-            claim["source_type"] = "video"
+            claim["source_type"] = "youtube"
         all_claims.extend(claims)
 
     # Process tweets
@@ -133,7 +133,7 @@ def process_videos_and_tweets(videos, tweets, verify_with_journals, journals):
         claims = process_text_chunks(tweet["text"], verify_with_journals, journals)
         for claim in claims:
             claim["source_id"] = tweet["id"]
-            claim["source_type"] = "tweet"
+            claim["source_type"] = "twitter"
         all_claims.extend(claims)
 
     return all_claims

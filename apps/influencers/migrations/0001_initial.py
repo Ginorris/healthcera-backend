@@ -8,46 +8,83 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Influencer',
+            name="Influencer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('deleted', models.BooleanField(default=False)),
-                ('youtube_id', models.CharField(max_length=255)),
-                ('twitter_id', models.CharField(blank=True, max_length=255, null=True)),
-                ('youtube_pp', models.CharField(max_length=255)),
-                ('name', models.CharField(max_length=255)),
-                ('description', models.TextField()),
-                ('followers', models.IntegerField()),
-                ('earnings', models.CharField(blank=True, max_length=255, null=True)),
-                ('podcast_playlist', models.CharField(max_length=255)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("deleted", models.BooleanField(default=False)),
+                ("youtube_id", models.CharField(max_length=255)),
+                ("twitter_id", models.CharField(blank=True, max_length=255, null=True)),
+                ("youtube_pp", models.CharField(max_length=255)),
+                ("name", models.CharField(max_length=255)),
+                ("description", models.TextField()),
+                ("followers", models.IntegerField()),
+                ("earnings", models.CharField(blank=True, max_length=255, null=True)),
+                ("podcast_playlist", models.CharField(max_length=255)),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='Claim',
+            name="Claim",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('deleted', models.BooleanField(default=False)),
-                ('source_type', models.CharField(choices=[('youtube', 'YouTube'), ('twitter', 'Twitter')], max_length=255)),
-                ('source_id', models.CharField(max_length=255)),
-                ('claim', models.TextField()),
-                ('validation', models.CharField(choices=[('verified', 'Verified'), ('questionable', 'Questionable'), ('debunked', 'Debunked')], max_length=255)),
-                ('category', models.CharField(choices=[], max_length=255)),
-                ('influencer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='influencers.influencer')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("deleted", models.BooleanField(default=False)),
+                (
+                    "source_type",
+                    models.CharField(
+                        choices=[("youtube", "YouTube"), ("twitter", "Twitter")],
+                        max_length=255,
+                    ),
+                ),
+                ("source_id", models.CharField(max_length=255)),
+                ("claim", models.TextField()),
+                (
+                    "validation",
+                    models.CharField(
+                        choices=[
+                            ("verified", "Verified"),
+                            ("questionable", "Questionable"),
+                            ("debunked", "Debunked"),
+                        ],
+                        max_length=255,
+                    ),
+                ),
+                ("category", models.CharField(choices=[], max_length=255)),
+                (
+                    "influencer",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="influencers.influencer",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]

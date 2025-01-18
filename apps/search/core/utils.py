@@ -24,11 +24,11 @@ def filter_checked_tweet_ids(tweets, influencer):
 def prepare_sources_for_analysis(videos, tweets):
     """"""
     sources = [
-        {"text": video["text"], "source_type": "youtube", "source_id": video["id"]} 
+        {"text": video["text"], "source_type": "youtube", "source_id": video["id"]}
         for video in videos
     ]
     sources += [
-        {"text": tweet["text"], "source_type": "twitter", "source_id": tweet["id"]} 
+        {"text": tweet["text"], "source_type": "twitter", "source_id": tweet["id"]}
         for tweet in tweets
     ]
     return sources

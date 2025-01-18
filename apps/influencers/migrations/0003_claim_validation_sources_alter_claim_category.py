@@ -6,18 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('influencers', '0002_claim_score'),
+        ("influencers", "0002_claim_score"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='claim',
-            name='validation_sources',
+            model_name="claim",
+            name="validation_sources",
             field=models.JSONField(default=list),
         ),
         migrations.AlterField(
-            model_name='claim',
-            name='category',
-            field=models.CharField(choices=[('nutrition', 'Nutrition'), ('exercise', 'Exercise'), ('mental_health', 'Mental Health'), ('sleep', 'Sleep'), ('chronic_illness_management', 'Chronic Illness Management'), ('supplements', 'Supplements'), ('other', 'Other')], max_length=255),
+            model_name="claim",
+            name="category",
+            field=models.CharField(
+                choices=[
+                    ("nutrition", "Nutrition"),
+                    ("exercise", "Exercise"),
+                    ("mental_health", "Mental Health"),
+                    ("sleep", "Sleep"),
+                    ("chronic_illness_management", "Chronic Illness Management"),
+                    ("supplements", "Supplements"),
+                    ("other", "Other"),
+                ],
+                max_length=255,
+            ),
         ),
     ]

@@ -7,46 +7,52 @@ from collections import Counter
 class ClaimSerializer(serializers.Serializer):
     class Meta:
         model = Claim
-        fields = ('source_id', 'claim', 'validation', 'category', 'score', 'created')
+        fields = ("source_id", "claim", "validation", "category", "score", "created")
 
     def to_representation(self, instance):
-        # return super().to_representation(instance)
         return {
-            'source_id': instance.source_id,
-            # 'source_link': '',
-            'claim': instance.claim,
-            'validation': instance.validation,
-            'category': instance.category,
-            'score': instance.score,
-            'created': instance.created,
+            "source_id": instance.source_id,
+            "source": instance.validation_sources,
+            "claim": instance.claim,
+            "validation": instance.validation.capitalize(),
+            "category": instance.category.capitalize(),
+            "score": instance.score,
+            "created": instance.created.strftime("%Y-%m-%d"),
         }
 
 
 class InfluencerRetreiveSerializer(serializers.Serializer):
     class Meta:
         model = Influencer
-        fields = ('youtube_id', 'name', 'pp', 'description', 'followers', 'claims')
-    
+        fields = ("youtube_id", "name", "pp", "description", "followers", "claims")
+
     def to_representation(self, instance):
-        claims = instance.claim_set.all()
+        claims = instance.claim_set.all()[:20]
+
+        followers = instance.followers
+        if int(followers) > 1000000:
+            followers = f"{followers/1000000}M"
+        elif followers > 1000:
+            followers = f"{followers/1000}K"
+
         return {
-            'name': instance.name,
-            'pp': instance.youtube_pp,
-            'description': instance.description,
-            'followers': instance.followers,
-            'categories': [],
-            # 'products': [],
-            # 'revenue'
-            'score': f"{get_claims_avg_score(claims)}%",
-            'claims': ClaimSerializer(instance.claim_set.all(), many=True).data,
+            "name": instance.name,
+            "pp": instance.youtube_pp,
+            "description": instance.description,
+            "followers": followers,
+            "categories": set(claims.values_list("category", flat=True)),
+            "products": 3,
+            "revenue": "$600K",
+            "score": f"{get_claims_avg_score(claims)}%",
+            "claims": ClaimSerializer(instance.claim_set.all(), many=True).data,
         }
 
 
 class InfluencerListSerializer(serializers.Serializer):
     class Meta:
         model = Influencer
-        fields = ('youtube_id', 'name', 'pp', 'followers', 'score')
-    
+        fields = ("youtube_id", "name", "pp", "followers", "score")
+
     def to_representation(self, instance):
         # TODO order by score
         claims = instance.claim_set.all()
@@ -61,10 +67,10 @@ class InfluencerListSerializer(serializers.Serializer):
         elif followers > 1000:
             followers = f"{followers/1000}K"
         return {
-            'name': instance.name,
-            'pp': instance.youtube_pp,
-            'category': category,
-            'followers': followers,
-            'score': f"{get_claims_avg_score(claims)}%",
-            'verified_claims': instance.claim_set.filter(validation='verified').count(),
+            "name": instance.name,
+            "pp": instance.youtube_pp,
+            "category": category,
+            "followers": followers,
+            "score": f"{get_claims_avg_score(claims)}%",
+            "verified_claims": instance.claim_set.filter(validation="verified").count(),
         }

@@ -2,25 +2,26 @@ from django.db import models
 
 
 SOURCE_CHOICES = (
-    ('youtube', 'YouTube'),
-    ('twitter', 'Twitter'),
+    ("youtube", "YouTube"),
+    ("twitter", "Twitter"),
 )
 
 VALIDATION_CHOICES = (
-    ('verified', 'Verified'),
-    ('questionable', 'Questionable'),
-    ('debunked', 'Debunked'),
+    ("verified", "Verified"),
+    ("questionable", "Questionable"),
+    ("debunked", "Debunked"),
 )
 
 CLAIM_CATEGORIES = (
-    ('nutrition', 'Nutrition'),
-    ('exercise', 'Exercise'),
-    ('mental_health', 'Mental Health'),
-    ('sleep', 'Sleep'),
-    ('chronic_illness_management', 'Chronic Illness Management'),
-    ('supplements', 'Supplements'),
-    ('other', 'Other'),
+    ("nutrition", "Nutrition"),
+    ("exercise", "Exercise"),
+    ("mental_health", "Mental Health"),
+    ("sleep", "Sleep"),
+    ("chronic_illness_management", "Chronic Illness Management"),
+    ("supplements", "Supplements"),
+    ("other", "Other"),
 )
+
 
 class BaseModel(models.Model):
     updated = models.DateTimeField(auto_now=True)
@@ -41,7 +42,7 @@ class Influencer(BaseModel):
     description = models.TextField()
     followers = models.IntegerField()
     earnings = models.CharField(max_length=255, null=True, blank=True)
-    podcast_playlist = models.CharField(max_length=255)
+    podcast_playlist = models.CharField(max_length=255, null=True, blank=True)
 
 
 # TODO source link, score int or float?
@@ -49,7 +50,7 @@ class Claim(BaseModel):
     influencer = models.ForeignKey(Influencer, on_delete=models.CASCADE)
     source_type = models.CharField(max_length=255, choices=SOURCE_CHOICES)
     source_id = models.CharField(max_length=255)
-    validation_sources = models.JSONField(default=list) 
+    validation_sources = models.JSONField(default=list)
     score = models.FloatField()
     claim = models.TextField()
     validation = models.CharField(max_length=255, choices=VALIDATION_CHOICES)

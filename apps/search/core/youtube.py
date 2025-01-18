@@ -2,6 +2,7 @@ import requests
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled
 from django.conf import settings
+from rest_framework.exceptions import ValidationError
 
 
 def google_api_request(endpoint: str, params: dict) -> dict:
@@ -15,14 +16,12 @@ def google_api_request(endpoint: str, params: dict) -> dict:
 
 def search_channel_by_name(name: str):
     """"""
-    params = {
-        "part": "snippet",
-        "q": name,
-        "type": "channel",
-        "maxResults": 1
-    }
+    params = {"part": "snippet", "q": name, "type": "channel", "maxResults": 1}
     data = google_api_request("/search", params)
-    return data.get("items", [None])[0]
+    data = data.get("items", [None])
+    if not data:
+        raise ValidationError("Channel not found")
+    return data[0]
 
 
 def fetch_channel_statistics(channel_id: str) -> dict:
@@ -32,9 +31,13 @@ def fetch_channel_statistics(channel_id: str) -> dict:
         "id": channel_id,
     }
     data = google_api_request("/channels", params)
-    return data.get("items", [None])[0]
+    data = data.get("items", [None])
+    if not data:
+        return None
+    return data[0]
 
 
+# TODO use other playlist if not podcast found
 def search_podcast_playlist(channel_id: str) -> str:
     """"""
     params = {
@@ -42,10 +45,13 @@ def search_podcast_playlist(channel_id: str) -> str:
         "channelId": channel_id,
         "q": "podcast",
         "type": "playlist",
-        "maxResults": 1
+        "maxResults": 1,
     }
     data = google_api_request("/search", params)
-    return data.get("items", [None])[0]["id"]["playlistId"]
+    data = data.get("items", [None])
+    if not data:
+        return None
+    return data[0]["id"]["playlistId"]
 
 
 # TODO cap to one week old
@@ -53,13 +59,15 @@ def search_podcast_playlist(channel_id: str) -> str:
 def get_videos_from_playlist(playlist_id: str) -> list:
     """Get video IDs from a YouTube playlist."""
     params = {
-        'part': 'snippet',
-        'playlistId': playlist_id,
-        'maxResults': 1,
+        "part": "snippet",
+        "playlistId": playlist_id,
+        "maxResults": 1,
     }
     data = google_api_request("/playlistItems", params)
     items = data.get("items", [])
-    return [item['snippet']['resourceId']['videoId']for item in items]
+    if not items:
+        return []
+    return [item["snippet"]["resourceId"]["videoId"] for item in items]
 
 
 def get_video_transcript(video_id: str) -> str:
@@ -68,8 +76,8 @@ def get_video_transcript(video_id: str) -> str:
         transcripts = YouTubeTranscriptApi.list_transcripts(video_id)
     except TranscriptsDisabled:
         return None
-    
-    if transcripts and 'en' in [t.language_code for t in transcripts]:
-        transcript_data = transcripts.find_transcript(['en']).fetch()
+
+    if transcripts and "en" in [t.language_code for t in transcripts]:
+        transcript_data = transcripts.find_transcript(["en"]).fetch()
         return " ".join(caption["text"] for caption in transcript_data)
     return None
