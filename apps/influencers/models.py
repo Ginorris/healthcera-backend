@@ -26,21 +26,25 @@ class BaseModel(models.Model):
         abstract = True
 
 
-# TODO slugs for names?
+# TODO slugs for names? define defaults
 class Influencer(BaseModel):
     # youtube id as a primary key
     youtube_id = models.CharField(max_length=255)
+    twitter_id = models.CharField(max_length=255, null=True, blank=True)
     youtube_pp = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     description = models.TextField()
     followers = models.IntegerField()
+    earnings = models.CharField(max_length=255, null=True, blank=True)
+    podcast_playlist = models.CharField(max_length=255)
 
 
-# TODO source link
+# TODO source link, score int or float?
 class Claim(BaseModel):
     influencer = models.ForeignKey(Influencer, on_delete=models.CASCADE)
     source_type = models.CharField(max_length=255, choices=SOURCE_CHOICES)
     source_id = models.CharField(max_length=255)
+    score = models.FloatField()
     claim = models.TextField()
     validation = models.CharField(max_length=255, choices=VALIDATION_CHOICES)
     category = models.CharField(max_length=255, choices=CLAIM_CATEGORIES)

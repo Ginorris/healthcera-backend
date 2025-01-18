@@ -1,12 +1,32 @@
 import os
+import openai
+import tweepy
 from pathlib import Path
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
+
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+
+GOOGLE_API_BASE_URL = 'https://www.googleapis.com/youtube/v3'
+
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+OPENAI_ENGINE = 'gpt-3.5-turbo-0125'
+
+TWITTER_AUTH = tweepy.OAuth1UserHandler(
+    consumer_key=os.getenv("TWITTER_API_KEY"),
+    consumer_secret=os.getenv("TWITTER_API_SECRET_KEY"),
+    access_token=os.getenv("TWITTER_ACCESS_TOKEN"),
+    access_token_secret=os.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+)
+
+TWITTER_API_CLIENT = tweepy.API(TWITTER_AUTH, wait_on_rate_limit=True)
 
 # TODO DEBUG
 DEBUG = True
@@ -21,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.influencers'
+    'apps.influencers',
+    'apps.search',
 ]
 
 MIDDLEWARE = [

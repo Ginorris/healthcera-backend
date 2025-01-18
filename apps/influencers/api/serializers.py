@@ -1,4 +1,4 @@
-from utils import get_claims_avg_score
+from apps.influencers.api.utils import get_claims_avg_score
 from rest_framework import serializers
 from apps.influencers.models import Influencer, Claim
 

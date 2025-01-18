@@ -1,6 +1,6 @@
-from utils import get_claims_avg_score
+from apps.influencers.api.utils import get_claims_avg_score
 from apps.influencers.models import Influencer, Claim
-from influencers.api.serializers import InfluencerRetreiveSerializer, InfluencerListSerializer
+from apps.influencers.api.serializers import InfluencerRetreiveSerializer, InfluencerListSerializer
 from rest_framework.generics import RetrieveAPIView
 from rest_framework.views import APIView
 
