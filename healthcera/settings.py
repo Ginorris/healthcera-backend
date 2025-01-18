@@ -33,7 +33,7 @@ TWITTER_API_CLIENT = tweepy.API(TWITTER_AUTH, wait_on_rate_limit=True)
 DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "https://healthcera-ihch5lnma-ginorris-projects.vercel.app/",
 ]
 
 ALLOWED_HOSTS = []
