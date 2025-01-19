@@ -36,6 +36,24 @@ CORS_ALLOWED_ORIGINS = [
     "https://healthcera-ihch5lnma-ginorris-projects.vercel.app",
 ]
 
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "authorization",
+    "accept",
+    "origin",
+    "x-requested-with",
+]
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "OPTIONS",
+]
+
+# TODO uncomment
+CORS_ALLOW_ALL_ORIGINS = True
+
+
 ALLOWED_HOSTS = [
     "healthcera-backend.onrender.com",
     "healthcera-ihch5lnma-ginorris-projects.vercel.app",
