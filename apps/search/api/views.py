@@ -25,7 +25,9 @@ class SearchView(APIView):
             influencer = search_influencer(influencer_name)
 
         # TODO uncomment
+        print(influencer, " SEARCHING FOR CLAIMS")
         search_claims(influencer, verify_with_journals, journals)
+        print(influencer, " SEARCHED")
 
         # TODO response could be simplified
         serializer = InfluencerRetreiveSerializer(influencer)
