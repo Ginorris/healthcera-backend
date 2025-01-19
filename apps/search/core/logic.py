@@ -17,6 +17,10 @@ from apps.search.core.utils import (
     # filter_checked_tweet_ids, 
     filter_checked_youtube_ids
 )
+import logging
+
+
+logger = logging.getLogger(__name__)
 
 
 # TODO we could get the description form the twitter account
@@ -53,33 +57,41 @@ def search_influencer(name: str) -> Influencer:
 
 
 def search_claims(influencer, verify_with_journals, journals):
-    raw_video_ids = get_videos_from_playlist(influencer.podcast_playlist)
-    video_ids = filter_checked_youtube_ids(influencer, raw_video_ids)
+    try:
+        logger.info(f"Starting claims search for influencer: {influencer.name}")
+        raw_video_ids = get_videos_from_playlist(influencer.podcast_playlist)
+        logger.info(f"Raw video IDs: {raw_video_ids}")
+        video_ids = filter_checked_youtube_ids(influencer, raw_video_ids)
+        video_ids = filter_checked_youtube_ids(influencer, raw_video_ids)
 
-    videos = []
-    for video_id in video_ids:
-        transcript = get_video_transcript(video_id)
-        if transcript:
-            videos.append({"id": video_id, "text": transcript, "type": "youtube"})
+        videos = []
+        for video_id in video_ids:
+            transcript = get_video_transcript(video_id)
+            if transcript:
+                videos.append({"id": video_id, "text": transcript, "type": "youtube"})
 
-    # raw_tweets = get_recent_tweets(influencer)
-    # tweets = filter_checked_tweet_ids(raw_tweets, influencer)
-    # tweets = [{"id": tweet["id"], "text": tweet["text"], "type": "twitter"} for tweet in tweets]
-    tweets = []
-    results = process_videos_and_tweets(videos, tweets, verify_with_journals, journals)
+        # raw_tweets = get_recent_tweets(influencer)
+        # tweets = filter_checked_tweet_ids(raw_tweets, influencer)
+        # tweets = [{"id": tweet["id"], "text": tweet["text"], "type": "twitter"} for tweet in tweets]
+        tweets = []
+        results = process_videos_and_tweets(videos, tweets, verify_with_journals, journals)
+        logger.info(f"Processed claims: {results}")
 
-    claims = []
-    for res in results:
-        claims.append(
-            Claim(
-                influencer=influencer,
-                source_id=res["source_id"],
-                source_type=res["source_type"].lower(),
-                score=res.get("trust_score", 0.0),
-                claim=res.get("claim", ""),
-                validation=res.get("label", "Questionable").lower(),
-                category=res.get("category", "Other").lower(),
-                validation_sources=[source for source in res.get("sources", [])],
+        claims = []
+        for res in results:
+            claims.append(
+                Claim(
+                    influencer=influencer,
+                    source_id=res["source_id"],
+                    source_type=res["source_type"].lower(),
+                    score=res.get("trust_score", 0.0),
+                    claim=res.get("claim", ""),
+                    validation=res.get("label", "Questionable").lower(),
+                    category=res.get("category", "Other").lower(),
+                    validation_sources=[source for source in res.get("sources", [])],
+                )
             )
-        )
-    Claim.objects.bulk_create(claims)
+        Claim.objects.bulk_create(claims)
+        logger.info(f"Created {len(claims)} claims for influencer: {influencer.name}")
+    except Exception as e:
+        logger.error(f"Error in search_claims: {str(e)}")
