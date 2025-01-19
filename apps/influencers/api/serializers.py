@@ -11,8 +11,8 @@ class ClaimSerializer(serializers.Serializer):
 
     def to_representation(self, instance):
         return {
-            "source_id": instance.source_id,
-            "source": instance.validation_sources,
+            "source": f"https://www.youtube.com/watch?v={instance.source_id}",
+            "validation_sources": instance.validation_sources,
             "claim": instance.claim,
             "validation": instance.validation.capitalize(),
             "category": instance.category.capitalize(),
