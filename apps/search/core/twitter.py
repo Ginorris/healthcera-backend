@@ -28,7 +28,7 @@ def get_twitter_id(handle: str) -> str:
     try:
         user = settings.TWITTER_API_CLIENT.get_user(screen_name=handle)
         return user.id
-    except tweepy.TweepyException as e:
+    except tweepy.TweepyException:
         return None
 
 

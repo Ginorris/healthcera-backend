@@ -33,10 +33,13 @@ TWITTER_API_CLIENT = tweepy.API(TWITTER_AUTH, wait_on_rate_limit=True)
 DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
-    "https://healthcera-ihch5lnma-ginorris-projects.vercel.app/",
+    "https://healthcera-ihch5lnma-ginorris-projects.vercel.app",
 ]
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "healthcera-backend.onrender.com",
+    "healthcera-ihch5lnma-ginorris-projects.vercel.app",
+]
 
 # Application definition
 INSTALLED_APPS = [

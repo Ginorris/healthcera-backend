@@ -11,9 +11,12 @@ from apps.search.core.youtube import (
 from apps.search.core.twitter import (
     get_twitter_handle,
     get_twitter_id,
-    get_recent_tweets,
+    # get_recent_tweets,
 )
-from apps.search.core.utils import filter_checked_tweet_ids, filter_checked_youtube_ids
+from apps.search.core.utils import (
+    # filter_checked_tweet_ids, 
+    filter_checked_youtube_ids
+)
 
 
 # TODO we could get the description form the twitter account
