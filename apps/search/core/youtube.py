@@ -31,13 +31,32 @@ def fetch_channel_statistics(channel_id: str) -> dict:
         "id": channel_id,
     }
     data = google_api_request("/channels", params)
-    data = data.get("items", [None])
+    data = data.get("items", [])
     if not data:
         return None
     return data[0]
 
 
-# TODO use other playlist if not podcast found
+def get_playlist_with_most_videos(channel_id: str) -> str:
+    """"""
+    params = {
+        "part": "contentDetails",
+        "channelId": channel_id,
+        "type": "playlist",
+        "maxResults": 50,
+    }
+    data = google_api_request("/playlists", params)
+    playlists = data.get("items", [])
+    if not playlists:
+        return None
+    
+    max_videos_playlist = max(
+        playlists,
+        key=lambda playlist: int(playlist["contentDetails"].get("itemCount", 0)),
+    )
+    return max_videos_playlist["id"]
+
+
 def search_podcast_playlist(channel_id: str) -> str:
     """"""
     params = {
@@ -48,10 +67,10 @@ def search_podcast_playlist(channel_id: str) -> str:
         "maxResults": 1,
     }
     data = google_api_request("/search", params)
-    data = data.get("items", [None])
-    if not data:
-        return None
-    return data[0]["id"]["playlistId"]
+    playlists = data.get("items", [])
+    if playlists:
+        return playlists[0]["id"]["playlistId"]
+    return get_playlist_with_most_videos(channel_id)
 
 
 # TODO cap to one week old

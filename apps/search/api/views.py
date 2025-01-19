@@ -9,7 +9,6 @@ from apps.influencers.api.serializers import InfluencerRetreiveSerializer
 
 class SearchView(APIView):
     def post(self, request):
-        print("Request data:", request.data)
         influencer_name = request.data.get("influencer_name")
         # include_revenue = request.data.get('include_revenue', False)
         # claims_per_influencer = request.data.get('claims_per_influencer', 50)
