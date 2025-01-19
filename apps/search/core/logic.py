@@ -46,7 +46,7 @@ def search_influencer(name: str) -> Influencer:
         youtube_id=channel_id,
         twitter_id=twitter_id,
         youtube_pp=channel["snippet"]["thumbnails"]["high"]["url"],
-        name=name.title(),
+        name = name.title().replace(".", ""),
         description=channel["snippet"]["description"],
         followers=channel_statistics["statistics"]["subscriberCount"],
         # earnings="",
