@@ -80,7 +80,7 @@ def get_videos_from_playlist(playlist_id: str) -> list:
     params = {
         "part": "snippet",
         "playlistId": playlist_id,
-        "maxResults": 50,
+        "maxResults": 1,
     }
     data = google_api_request("/playlistItems", params)
     items = data.get("items", [])
