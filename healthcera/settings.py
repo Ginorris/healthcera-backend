@@ -33,7 +33,7 @@ TWITTER_API_CLIENT = tweepy.API(TWITTER_AUTH, wait_on_rate_limit=True)
 DEBUG = False
 
 CORS_ALLOWED_ORIGINS = [
-    "https://healthcera.vercel.app/"
+    "https://healthcera.vercel.app"
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -52,7 +52,7 @@ CORS_ALLOW_METHODS = [
 
 ALLOWED_HOSTS = [
     "healthcera-backend.onrender.com",
-    "healthcera.vercel.app/",
+    "healthcera.vercel.app",
     "localhost",
     "127.0.0.1"
 ]
