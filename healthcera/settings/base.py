@@ -30,8 +30,6 @@ TWITTER_AUTH = tweepy.OAuth1UserHandler(
 
 TWITTER_API_CLIENT = tweepy.API(TWITTER_AUTH, wait_on_rate_limit=True)
 
-DEBUG = False
-
 CORS_ALLOWED_ORIGINS = [
     "https://healthcera.vercel.app"
 ]
@@ -103,14 +101,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "healthcera.wsgi.application"
-
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
-}
-
 
 AUTH_PASSWORD_VALIDATORS = [
     {
