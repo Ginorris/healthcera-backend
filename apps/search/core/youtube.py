@@ -109,3 +109,22 @@ def get_video_transcript(video_id: str) -> str:
     except Exception as e:
         print(f"Error fetching transcript for video ID {video_id}: {str(e)}")
         return None
+    
+def test_transcript(video_id):
+    try:
+        print(f"Testing transcript fetching for video ID: {video_id}")
+        transcripts = YouTubeTranscriptApi.list_transcripts(video_id)
+        print(f"Transcripts available: {[t.language_code for t in transcripts]}")
+
+        if "en" in [t.language_code for t in transcripts]:
+            transcript_data = transcripts.find_transcript(["en"]).fetch()
+            print("Sample Transcript:", " ".join(caption["text"] for caption in transcript_data[:5]))
+        else:
+            print("No English transcript available.")
+
+    except TranscriptsDisabled:
+        print("Transcripts are disabled for this video.")
+    except NoTranscriptFound:
+        print("No transcript found for this video.")
+    except Exception as e:
+        print(f"Unexpected error: {str(e)}")
