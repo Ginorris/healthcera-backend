@@ -92,20 +92,12 @@ def get_videos_from_playlist(playlist_id: str) -> list:
 def get_video_transcript(video_id: str) -> str:
     """Fetch the transcript for a YouTube video using SmartProxy."""
     try:
-        print(f"Fetching transcripts for video ID: {video_id}")
         transcripts = YouTubeTranscriptApi.list_transcripts(video_id, proxies=settings.PROXIES)
-        print(f"Transcripts found: {[t.language_code for t in transcripts]}")
 
         if transcripts and "en" in [t.language_code for t in transcripts]:
-            print(f"Fetching 'en' transcript for video ID: {video_id}")
             transcript_data = transcripts.find_transcript(["en"]).fetch()
-            print(f"Transcript fetched: {transcript_data[:3]}...")  # Log first 3 entries
             return " ".join(caption["text"] for caption in transcript_data)
-        else:
-            print(f"No 'en' transcript available for video ID: {video_id}")
     except TranscriptsDisabled:
-        print(f"Transcripts are disabled for video ID: {video_id}")
         return None
-    except Exception as e:
-        print(f"Error fetching transcript for video ID {video_id}: {str(e)}")
+    except Exception:
         return None
