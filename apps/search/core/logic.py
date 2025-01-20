@@ -23,8 +23,8 @@ def search_influencer(name: str) -> Influencer:
     """
     Searches for an influencer and fetches their YouTube channel, playlist, and Twitter details.
     """
-    if not is_health_influencer(name):
-        raise ValidationError("Influencer is not a health influencer")
+    # if not is_health_influencer(name):
+    #     raise ValidationError("Influencer is not a health influencer")
     
     channel = search_channel_by_name(name)
     if not channel:
